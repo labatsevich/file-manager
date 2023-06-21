@@ -2,10 +2,14 @@ import { stdin as input, stdout as output, stdout } from 'node:process';
 import path from 'node:path';
 import os from 'node:os';
 import readline from 'node:readline/promises';
+import OSInfo from './OSInfo.js';
 
 let username;
 const __currentDir = os.homedir();
 const __cliArguments = process.argv.slice(2).join('');
+
+const __os = new OSInfo();
+
 
 if(__cliArguments.indexOf('--username')!==-1){
     username = __cliArguments.split('=').pop();
@@ -26,6 +30,11 @@ rl.on('line',(line) => {
     process.exit();
   }
   
+  if(line.startsWith('os')){
+    const method = line.slice(5).toLowerCase();
+     __os[method]();
+  }
+
 });
 
 rl.on('SIGINT', () => { 
