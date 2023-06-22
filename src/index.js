@@ -4,6 +4,7 @@ import os from 'node:os';
 import readline from 'node:readline/promises';
 import OSInfo from './info.js';
 import Navigation from './navigation.js';
+import { cat,add } from './files.js';
 
 let username;
 let currentDir = os.homedir();
@@ -67,6 +68,18 @@ rl.on('line', async (line) => {
 
   if (line.startsWith('ls')) {
     await navigator.ls(currentDir);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+  }
+
+  if (line.startsWith('cat')) {
+    const fileName = line.split(' ').pop();
+    await cat(currentDir,fileName);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+  }
+
+  if (line.startsWith('add')) {
+    const fileName = line.split(' ').pop();
+    await add(currentDir,fileName);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
