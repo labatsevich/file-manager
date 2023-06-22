@@ -13,7 +13,7 @@ const __os = new OSInfo();
 
 if(__cliArguments.indexOf('--username')!==-1){
     username = __cliArguments.split('=').pop();
-    stdout.write(`\nWelcome to the File Manager, ${username}!\nYou are currently in ${__currentDir}`)
+    stdout.write(`\nWelcome to the File Manager, ${username}!\nYou are currently in ${__currentDir}\n`);
 }
 else{
   stdout.write('Incorrect command! \nType \'npm run start -- --username=your_username\'\n and try again!')
@@ -31,8 +31,13 @@ rl.on('line',(line) => {
   }
   
   if(line.startsWith('os')){
+
     const method = line.slice(5).toLowerCase();
+    try{
      __os[method]();
+    }catch{
+      stdout.write('Invalid command\n');
+    }
   }
 
 });
