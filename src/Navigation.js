@@ -1,30 +1,65 @@
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import path from 'node:path';
+import { isExists, isDirectory } from './helpers.js';
 
-class Navigation{
-    
-    __path;
-    __homedir;
+class Navigation {
 
-    constructor(homedir){
-        this.__path = homedir;
-        this.__homedir = homedir;
+    current_path;
+
+    constructor(homedir) {
+        this.current_path = homedir;
     }
 
-    up(filename,path){
+    async ls(currentDir){
 
+        try{
+        const entries =  await fs.readdir(currentDir,{withFileTypes:true});
+        const collection = entries.sort((a,b) => a.isFile() - b.isFile()).filter(item => !item.isSymbolicLink()).map((item) =>({
+            Name:item.name,
+            Type: item.isFile() ? "file" : "directory" 
+        }));
+
+        console.table(collection)
+
+        }
+        catch{
+            process.stdout.write('Operation failde');
+        }
+        
     }
 
-    async cd(dirPath){
+    up(prevPath) {
+        const newPath = path.join(prevPath, '..');
+        if (isExists(newPath) && isDirectory(newPath)) {
+            return newPath;
+        }
+        return prevPath;
+    }
 
-        if(!path.isAbsolute(dirPath)){
-            dirPath = path.resolve(this.__path,dirPath);
-            
+    async cd(prevPath, dirPath) {
 
+        if (!path.isAbsolute(dirPath)) {
+            dirPath = path.normalize(path.join(prevPath, dirPath));
+        }
+        try {
+            const stats = await fs.stat(dirPath);
+
+            if (stats && stats.isDirectory()) {
+                return dirPath
+            }
+            else {
+                throw new Error()
+            }
+        } catch {
+            process.stdout.write('Operation failed')
+            return prevPath
         }
 
     }
 
-};
+}
+
+
+
 
 export default Navigation;
