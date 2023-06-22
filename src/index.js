@@ -3,12 +3,14 @@ import path from 'node:path';
 import os from 'node:os';
 import readline from 'node:readline/promises';
 import OSInfo from './OSInfo.js';
+import Navigation from './Navigation.js';
 
 let username;
 const __currentDir = os.homedir();
 const __cliArguments = process.argv.slice(2).join('');
 
 const __os = new OSInfo();
+const __navigator = new Navigation(__currentDir);
 
 
 if(__cliArguments.indexOf('--username')!==-1){
@@ -38,6 +40,13 @@ rl.on('line',(line) => {
     }catch{
       stdout.write('Invalid command\n');
     }
+  }
+
+
+  if(line.startsWith('cd')){
+    const method    = line.slice(0,2).toLowerCase();
+    const dir_path  = line.slice(3).replace(/--/,''); 
+    __navigator[method](dir_path);
   }
 
 });
