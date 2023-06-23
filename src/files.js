@@ -1,9 +1,11 @@
 import path from 'node:path';
+import fs, { copyFile, mkdir } from 'node:fs/promises';
 import { stdout as output } from 'node:process';
-import { isFile } from './helpers.js';
-import { createReadStream } from 'node:fs';
+import { isFile,isExists } from './helpers.js';
+import { createReadStream, createWriteStream } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { MESSAGE } from './settings.js';
+import { pipeline } from 'node:stream/promises';
 
 
 export const cat = async (currentDir, pathToFile) => {
@@ -31,3 +33,40 @@ export const add = async (currentDir, fileName) => {
     }
 
 };
+
+
+export const rn = async(fromFileName,toFileName) => {
+
+  const exist = await isExists(toFileName);
+  if(!exist){
+    await fs.rename(fromFileName,toFileName);
+  }
+  else{
+    output.write(MESSAGE.FAILED);
+  }
+
+}
+
+
+export const cp = async (pathToFile,newDir) => {
+
+  const exist = await isExists(newDir)
+  const filename = path.basename(pathToFile);
+  
+  if(!exist){
+    try{
+      await mkdir(newDir,{recursive:true});
+      
+      const readable = createReadStream(pathToFile);
+      const writeble = createWriteStream(path.join(newDir,filename));
+
+      await pipeline(readable,writeble);
+
+    }
+    catch{
+      output.write(MESSAGE.FAILED);
+    }
+
+  }
+
+}

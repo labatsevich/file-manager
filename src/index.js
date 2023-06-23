@@ -4,7 +4,7 @@ import os from 'node:os';
 import readline from 'node:readline/promises';
 import OSInfo from './info.js';
 import Navigation from './navigation.js';
-import { cat,add } from './files.js';
+import { cat,add,rn, cp } from './files.js';
 import { MESSAGE } from './settings.js';
 
 let username;
@@ -82,6 +82,28 @@ rl.on('line', async (line) => {
     const fileName = line.split(' ').pop();
     await add(currentDir,fileName);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
+  }
+
+  if(line.startsWith('rn')){
+    const [fromFileName, toFileName] = line.slice(3).split(' '); 
+    const src = path.resolve(currentDir,fromFileName);
+    const srcDir = path.parse(src).dir;
+    const dest = path.resolve(srcDir,toFileName);
+    await rn(src,dest);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+  }
+
+  if(line.startsWith('cp')){
+
+    const [fileName,newDir] = line.slice(3).split(' ');
+    const pathToFile = path.resolve(currentDir,fileName); 
+    await cp(pathToFile,newDir);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+
+  }
+
+  else{
+    stdout.write(`${MESSAGE.INVALID}\n`)
   }
 
 });
