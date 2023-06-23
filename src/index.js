@@ -5,6 +5,7 @@ import readline from 'node:readline/promises';
 import OSInfo from './info.js';
 import Navigation from './navigation.js';
 import { cat,add } from './files.js';
+import { MESSAGE } from './settings.js';
 
 let username;
 let currentDir = os.homedir();
@@ -40,7 +41,7 @@ rl.on('line', async (line) => {
       sysInfo[method]();
       stdout.write(`\nYou are currently in ${currentDir}\n`);
     } catch {
-      stdout.write('Invalid command\n');
+      stdout.write(`${MESSAGE.INVALID}`);
     }
   }
 

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { isExists, isDirectory } from './helpers.js';
+import { MESSAGE } from './settings.js';
 
 class Navigation {
 
@@ -23,7 +24,7 @@ class Navigation {
 
         }
         catch{
-            process.stdout.write('Operation failde');
+            process.stdout.write(`${MESSAGE.FAILED}`);
         }
         
     }
@@ -51,7 +52,7 @@ class Navigation {
                 throw new Error()
             }
         } catch {
-            process.stdout.write('Operation failed')
+            process.stdout.write(`${MESSAGE.FAILED}`)
             return prevPath
         }
 

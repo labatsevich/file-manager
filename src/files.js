@@ -3,6 +3,7 @@ import { stdout as output } from 'node:process';
 import { isFile } from './helpers.js';
 import { createReadStream } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
+import { MESSAGE } from './settings.js';
 
 
 export const cat = async (currentDir, pathToFile) => {
@@ -15,7 +16,7 @@ export const cat = async (currentDir, pathToFile) => {
       rs.on('end', () => output.write('\n'))
     }
   } catch {
-    output.write('Operation failed\n');
+    output.write(`${MESSAGE.FAILED}\n`);
   }
 
 }
@@ -26,7 +27,7 @@ export const add = async (currentDir, fileName) => {
     try {
         await writeFile(filePath,'',{flag:'wx+'})
     } catch {
-      output.write('Operation failed');
+      output.write(`${MESSAGE.FAILED}\n`);
     }
 
 };
