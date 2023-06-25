@@ -4,7 +4,7 @@ import os from 'node:os';
 import readline from 'node:readline/promises';
 import OSInfo from './info.js';
 import Navigation from './navigation.js';
-import { cat,add,rn, cp } from './files.js';
+import { cat,add,rn,cp,rm } from './files.js';
 import { MESSAGE } from './settings.js';
 
 let username;
@@ -102,9 +102,15 @@ rl.on('line', async (line) => {
 
   }
 
-  else{
-    stdout.write(`${MESSAGE.INVALID}\n`)
+  if(line.startsWith('rm')){
+
+    const fileName = line.slice(3).trim().replace(/--/,'');
+    const pathToFile = path.resolve(currentDir,fileName); 
+    await rm(pathToFile);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+
   }
+
 
 });
 

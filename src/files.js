@@ -70,3 +70,22 @@ export const cp = async (pathToFile,newDir) => {
   }
 
 }
+
+export const rm = async(pathToFile) => {
+
+  if(isExists(pathToFile)){
+
+    try{
+      await fs.rm(pathToFile);
+      output.write('File was removed')
+    }catch{
+       output.write(`${MESSAGE.FAILED}`)
+    }
+
+  }
+  else{
+    console.write(`${MESSAGE.FAILED}`)
+  }
+
+
+}
