@@ -5,6 +5,7 @@ import readline from 'node:readline/promises';
 import OSInfo from './info.js';
 import Navigation from './navigation.js';
 import { cat,add,rn,cp,rm,mv } from './files.js';
+import { calculate } from './brotli.js';
 import { MESSAGE } from './settings.js';
 
 let username;
@@ -118,6 +119,12 @@ rl.on('line', async (line) => {
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
+  if(line.startsWith('hash')){
+    const fileName = line.slice(3).trim().replace(/--/,'');
+    const pathToFile = path.resolve(currentDir,fileName); 
+    await calculate(pathToFile);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+  }
 
 });
 
