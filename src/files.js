@@ -89,3 +89,11 @@ export const rm = async(pathToFile) => {
 
 
 }
+
+export const mv = async(pathToFile, newDir) =>{
+
+  await cp(pathToFile,newDir);
+  await rm(pathToFile);
+  output.write('File has been moved')
+
+}

@@ -4,7 +4,7 @@ import os from 'node:os';
 import readline from 'node:readline/promises';
 import OSInfo from './info.js';
 import Navigation from './navigation.js';
-import { cat,add,rn,cp,rm } from './files.js';
+import { cat,add,rn,cp,rm,mv } from './files.js';
 import { MESSAGE } from './settings.js';
 
 let username;
@@ -109,6 +109,13 @@ rl.on('line', async (line) => {
     await rm(pathToFile);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
 
+  }
+
+  if(line.startsWith('mv')){
+    const [fileName,newDir] = line.slice(3).split(' ');
+    const pathToFile = path.resolve(currentDir,fileName); 
+    await mv(pathToFile,newDir);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
 
