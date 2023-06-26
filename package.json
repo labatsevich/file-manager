@@ -1,0 +1,26 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "simple file manager",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/index.js -- --username=FakeUser"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/labatsevich/file-manager.git"
+  },
+  "keywords": [
+    "fs",
+    "node",
+    "file_manager"
+  ],
+  "author": "yuri labatsevich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/labatsevich/file-manager/issues"
+  },
+  "homepage": "https://github.com/labatsevich/file-manager#readme"
+}
