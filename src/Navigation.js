@@ -39,10 +39,20 @@ class Navigation {
 
     async cd(prevPath, dirPath) {
 
+        if(dirPath.indexOf(':')===1){
+            dirPath = path.normalize(`${dirPath}${path.sep}`);
+        }
+
         if (!path.isAbsolute(dirPath)) {
+            
             dirPath = path.normalize(path.join(prevPath, dirPath));
+            
+        }
+        else{
+            console.log(dirPath)
         }
         try {
+            
             const stats = await fs.stat(dirPath);
 
             if (stats && stats.isDirectory()) {

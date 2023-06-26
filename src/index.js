@@ -55,7 +55,7 @@ rl.on('line', async (line) => {
     let newDir = params[params.length - 1];
 
     try {
-      currentDir = await navigator.cd(currentDir, newDir);
+      currentDir = await navigator.cd(currentDir, newDir.trim());
     } catch (err) {
       output.write(err)
     }
