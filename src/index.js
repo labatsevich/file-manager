@@ -143,6 +143,10 @@ rl.on('line', async (line) => {
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
+  else {
+    stdout.write(`${MESSAGE.INVALID}`);
+  }
+
 });
 
 rl.on('SIGINT', () => {
