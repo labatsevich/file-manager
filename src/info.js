@@ -10,7 +10,7 @@ class OSInfo {
 
    cpus() {
     const cpus = os.cpus();
-    output.write(`Your host machine has ${this.__cpus.length} CPUS`);
+    output.write(`Your host machine has ${cpus.length} CPUS`);
     os.cpus().forEach((info) => {
       const { model, speed } = info;
       output.write(`${fc} \nModel: ${model}, Clock rate: ${speed / 1000}GHz ${rc}`);

@@ -11,22 +11,22 @@ class Navigation {
         this.current_path = homedir;
     }
 
-    async ls(currentDir){
+    async ls(currentDir) {
 
-        try{
-        const entries =  await fs.readdir(currentDir,{withFileTypes:true});
-        const collection = entries.sort((a,b) => a.isFile() - b.isFile()).filter(item => !item.isSymbolicLink()).map((item) =>({
-            Name:item.name,
-            Type: item.isFile() ? "file" : "directory" 
-        }));
+        try {
+            const entries = await fs.readdir(currentDir, { withFileTypes: true });
+            const collection = entries.sort((a, b) => a.isFile() - b.isFile()).filter(item => !item.isSymbolicLink()).map((item) => ({
+                Name: item.name,
+                Type: item.isFile() ? "file" : "directory"
+            }));
 
-        console.table(collection)
+            console.table(collection)
 
         }
-        catch{
+        catch {
             process.stdout.write(`${MESSAGE.FAILED}`);
         }
-        
+
     }
 
     up(prevPath) {
@@ -39,27 +39,21 @@ class Navigation {
 
     async cd(prevPath, dirPath) {
 
-        if(dirPath.indexOf(':')===1){
+        if (dirPath.indexOf(':') === 1) {
             dirPath = path.normalize(`${dirPath}${path.sep}`);
         }
 
         if (!path.isAbsolute(dirPath)) {
-            
             dirPath = path.normalize(path.join(prevPath, dirPath));
-            
         }
-        else{
-            console.log(dirPath)
-        }
-        try {
-            
-            const stats = await fs.stat(dirPath);
 
+        try {
+            const stats = await fs.stat(dirPath);
             if (stats && stats.isDirectory()) {
                 return dirPath
             }
             else {
-                throw new Error()
+                process.stdout.write(`${MESSAGE.INVALID}`)
             }
         } catch {
             process.stdout.write(`${MESSAGE.FAILED}`)

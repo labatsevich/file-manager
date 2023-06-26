@@ -12,15 +12,15 @@ export const compress = async(pathToFile, pathToDest) => {
 
     if(existsSrc && isFile(pathToFile) && !existsDest){
         const readable = createReadStream(pathToFile);
-        const writeble = createWriteStream(pathToDest);
+        const writable = createWriteStream(pathToDest);
         const brotli = createBrotliCompress();
-        await pipeline(readable,brotli,writeble,(err)=> { 
-            if(err)output.write(`${MESSAGE.FAILED}\n`)
+        await pipeline(readable,brotli,writable,(err)=> { 
+            if(err)output.write(MESSAGE.FAILED);
         });
-        output.write(`${MESSAGE.SUCCESS}`)
+        output.write(MESSAGE.SUCCESS);
     }
     else{
-        output.write(`${MESSAGE.FAILED}\n`)
+        output.write(MESSAGE.FAILED);
     }
 
 };
@@ -32,15 +32,15 @@ export const decompress = async(pathToFile, pathToDest) => {
 
         if(existsSrc && isFile(pathToFile) && !existsDest){
         const readable = createReadStream(pathToFile);
-        const writeble = createWriteStream(pathToDest);
+        const writable = createWriteStream(pathToDest);
         const brotli = createBrotliDecompress();
-        await pipeline(readable,brotli,writeble,(err)=> { 
-            if(err)output.write(`${MESSAGE.FAILED}\n`)
+        await pipeline(readable,brotli,writable,(err)=> { 
+            if(err)output.write(MESSAGE.FAILED);
         });
-        output.write(`${MESSAGE.SUCCESS}`)
+        output.write(MESSAGE.SUCCESS);
     }
     else{
-        output.write(`${MESSAGE.FAILED}\n`)
+        output.write(MESSAGE.FAILED);
     }
 
     

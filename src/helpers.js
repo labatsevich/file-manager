@@ -15,19 +15,8 @@ export const isExists = async (path) => {
 
 export const isDirectory = async (path) => {
 
-  try {
     const stats = await fs.stat(path);
-    if (stats) {
-      return stats.isDirectory();
-    }
-    else {
-      throw new Error
-    }
-  }
-  catch {
-    throw new Error
-  }
-
+    return stats.isDirectory();
 
 }
 

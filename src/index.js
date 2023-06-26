@@ -37,16 +37,15 @@ rl.on('line', async (line) => {
   }
 
   else if (line.startsWith('os')) {
-
+    
     const method = line.slice(5).toLowerCase();
     try {
       sysInfo[method]();
       stdout.write(`\nYou are currently in ${currentDir}\n`);
     } catch {
-      stdout.write(`${MESSAGE.INVALID}`);
+      stdout.write(MESSAGE.INVALID);
     }
   }
-
 
   else if (line.startsWith('cd')) {
 
@@ -55,7 +54,7 @@ rl.on('line', async (line) => {
     let newDir = params[params.length - 1];
 
     try {
-      currentDir = await navigator.cd(currentDir, newDir.trim());
+      currentDir = await navigator[method](currentDir, newDir.trim());
     } catch (err) {
       output.write(err)
     }
@@ -87,7 +86,7 @@ rl.on('line', async (line) => {
   }
 
   else if(line.startsWith('rn')){
-    const [fromFileName, toFileName] = line.slice(3).split(' '); 
+    const [fromFileName, toFileName] = line.slice(3).trim().split(' '); 
     const src = path.resolve(currentDir,fromFileName);
     const srcDir = path.parse(src).dir;
     const dest = path.resolve(srcDir,toFileName);
@@ -97,7 +96,7 @@ rl.on('line', async (line) => {
 
   else if(line.startsWith('cp')){
 
-    const [fileName,newDir] = line.slice(3).split(' ');
+    const [fileName,newDir] = line.slice(3).trim().split(' ');
     const pathToFile = path.resolve(currentDir,fileName); 
     await cp(pathToFile,newDir);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
@@ -114,7 +113,7 @@ rl.on('line', async (line) => {
   }
 
   else if(line.startsWith('mv')){
-    const [fileName,newDir] = line.slice(3).split(' ');
+    const [fileName,newDir] = line.slice(3).trim().split(' ');
     const pathToFile = path.resolve(currentDir,fileName); 
     await mv(pathToFile,newDir);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
@@ -144,7 +143,7 @@ rl.on('line', async (line) => {
   }
 
   else {
-    stdout.write(`${MESSAGE.INVALID}`);
+    stdout.write(MESSAGE.INVALID);
   }
 
 });
