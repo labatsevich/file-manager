@@ -3,6 +3,6 @@ export const resetColor = '\x1b[0m';
 export const MESSAGE = {
     FAILED: 'Failed operation\n',
     INVALID: 'Invalid input\n',
-    SUCCESS: `${fontColor}Operation successfull${resetColor}\n`,
+    SUCCESS: `${fontColor}Operation successfully${resetColor}\n`,
     REMOVED: 'File has been removed\n'
 }
