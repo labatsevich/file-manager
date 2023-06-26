@@ -7,6 +7,7 @@ import Navigation from './navigation.js';
 import { cat,add,rn,cp,rm,mv } from './files.js';
 import { calculate } from './hash.js';
 import { MESSAGE } from './settings.js';
+import { compress,decompress } from './brotli.js';
 
 let username;
 let currentDir = os.homedir();
@@ -35,7 +36,7 @@ rl.on('line', async (line) => {
     process.exit();
   }
 
-  if (line.startsWith('os')) {
+  else if (line.startsWith('os')) {
 
     const method = line.slice(5).toLowerCase();
     try {
@@ -47,7 +48,7 @@ rl.on('line', async (line) => {
   }
 
 
-  if (line.startsWith('cd')) {
+  else if (line.startsWith('cd')) {
 
     const method = line.slice(0, 2).toLowerCase();
     const params = line.split(' ');
@@ -63,29 +64,29 @@ rl.on('line', async (line) => {
 
   }
 
-  if (line.startsWith('up')) {
+  else if (line.startsWith('up')) {
     currentDir = navigator.up(currentDir);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
-  if (line.startsWith('ls')) {
+  else if (line.startsWith('ls')) {
     await navigator.ls(currentDir);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
-  if (line.startsWith('cat')) {
+  else if (line.startsWith('cat')) {
     const fileName = line.split(' ').pop();
     await cat(currentDir,fileName);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
-  if (line.startsWith('add')) {
+  else if (line.startsWith('add')) {
     const fileName = line.split(' ').pop();
     await add(currentDir,fileName);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
-  if(line.startsWith('rn')){
+  else if(line.startsWith('rn')){
     const [fromFileName, toFileName] = line.slice(3).split(' '); 
     const src = path.resolve(currentDir,fromFileName);
     const srcDir = path.parse(src).dir;
@@ -94,7 +95,7 @@ rl.on('line', async (line) => {
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
-  if(line.startsWith('cp')){
+  else if(line.startsWith('cp')){
 
     const [fileName,newDir] = line.slice(3).split(' ');
     const pathToFile = path.resolve(currentDir,fileName); 
@@ -103,7 +104,7 @@ rl.on('line', async (line) => {
 
   }
 
-  if(line.startsWith('rm')){
+  else if(line.startsWith('rm')){
 
     const fileName = line.slice(3).trim().replace(/--/,'');
     const pathToFile = path.resolve(currentDir,fileName); 
@@ -112,17 +113,33 @@ rl.on('line', async (line) => {
 
   }
 
-  if(line.startsWith('mv')){
+  else if(line.startsWith('mv')){
     const [fileName,newDir] = line.slice(3).split(' ');
     const pathToFile = path.resolve(currentDir,fileName); 
     await mv(pathToFile,newDir);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
-  if(line.startsWith('hash')){
+  else if(line.startsWith('hash')){
     const fileName = line.slice(4).trim().replace(/--/,'');
     const pathToFile = path.resolve(currentDir,fileName); 
     await calculate(pathToFile);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+  }
+
+  else if(line.startsWith('compress')){
+    const [srcFileName, destFileName] = line.slice(8).trim().split(' ');
+    const pathToFile = path.resolve(currentDir,srcFileName); 
+    const pathToDest = path.resolve(currentDir,destFileName); 
+    await compress(pathToFile,pathToDest);
+    stdout.write(`\nYou are currently in ${currentDir}\n`);
+  }
+
+  else if(line.startsWith('decompress')){
+    const [srcFileName, destFileName] = line.slice(10).trim().split(' ');
+    const pathToFile = path.resolve(currentDir,srcFileName); 
+    const pathToDest = path.resolve(currentDir,destFileName); 
+    await decompress(pathToFile,pathToDest);
     stdout.write(`\nYou are currently in ${currentDir}\n`);
   }
 
