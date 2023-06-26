@@ -50,9 +50,17 @@ export const rn = async (fromFileName, toFileName) => {
 
 export const cp = async (pathToFile, newDir) => {
 
-  const exist = await isExists(newDir)
+  
   const filename = path.basename(pathToFile);
+  const currentDir = path.dirname(pathToFile);
 
+  if(!path.isAbsolute(newDir)){
+    newDir  = path.resolve(currentDir,newDir);
+    console.log(newDir);
+  }
+
+  const exist = await isExists(newDir)
+  
   if (!exist) {
     try {
       await mkdir(newDir, { recursive: true });
